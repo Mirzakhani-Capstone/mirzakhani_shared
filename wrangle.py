@@ -14,8 +14,8 @@ def get_explore_data():
     df = pd.read_csv('train_data.csv')
     return df
 
-def prep_data(df, features):
-    if features.isnull():
+def prep_data(df, features=[]):
+    if len(features) == 0:
         return df
     else:
         return df[features]
