@@ -2,7 +2,12 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-
+features = ['climateregions__climateregion', 'elevation__elevation', 'lat', 'lon', 'startdate',
+                 'contest-pevpr-sfc-gauss-14d__pevpr','contest-precip-14d__precip','contest-pres-sfc-gauss-14d__pres',
+                 'contest-prwtr-eatm-14d__prwtr','contest-rhum-sig995-14d__rhum','contest-slp-14d__slp',
+                 'contest-tmp2m-14d__tmp2m','contest-wind-h10-14d__wind-hgt-10','contest-wind-h100-14d__wind-hgt-100',
+                 'contest-wind-h500-14d__wind-hgt-500','contest-wind-h850-14d__wind-hgt-850','contest-wind-uwnd-250-14d__wind-uwnd-250','contest-wind-uwnd-925-14d__wind-uwnd-925','contest-wind-vwnd-250-14d__wind-vwnd-250',
+                 'contest-wind-vwnd-925-14d__wind-vwnd-925']
 
 def get_explore_data():
     df = pd.read_csv('train_data.csv')
@@ -10,6 +15,12 @@ def get_explore_data():
 
 def prep_data(df, features=[]):
     df['startdate'] = pd.to_datetime(df['startdate'])
+    if len(features) == 0:
+        return df
+    else:
+        return df[features]
+
+def rename_data(df):
     # rename column names for better readability and easy manipulations of columns
     df=df.rename(columns={'climateregions__climateregion': 'region', 
                                       'elevation__elevation': 'elevation',
@@ -29,10 +40,7 @@ def prep_data(df, features=[]):
                                       'contest-wind-vwnd-250-14d__wind-vwnd-250':'long_wind_250mb',
                                       'contest-wind-vwnd-925-14d__wind-vwnd-925':'long_wind_925mb'
                                      })
-    if len(features) == 0:
-        return df
-    else:
-        return df[features]
+    return df
 
 def split_data(df, test_size=0.15):
     '''
