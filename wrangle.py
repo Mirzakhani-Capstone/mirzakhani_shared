@@ -15,8 +15,10 @@ def get_explore_data():
     return df
 
 def prep_data(df, features):
-    df = df[features]
-    return df
+    if features.isnull():
+        return df
+    else:
+        return df[features]
 
 def split_data(df, test_size=0.15):
     '''
