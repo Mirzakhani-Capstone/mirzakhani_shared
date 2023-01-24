@@ -15,6 +15,7 @@ def get_explore_data():
     return df
 
 def prep_data(df, features=[]):
+    df['startdate'] = pd.to_datetime(df['startdate'])
     if len(features) == 0:
         return df
     else:
