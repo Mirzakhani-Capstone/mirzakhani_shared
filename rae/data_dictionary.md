@@ -1,5 +1,5 @@
-|column name|	|definition|
-|wind-hgt-10-2010|	|geopotential height at 10 millibars|
+|Feature | Definition| Value
+|wind-hgt-10-2010||geopotential height at 10 millibars|
 |wind-hgt-100-2010|	|geopotential height at 100 millibars|
 |wind-hgt-500-2010|	|geopotential height at 500 millibars|
 |wind-hgt-850-2010|	|geopotential height at 850 millibars|
