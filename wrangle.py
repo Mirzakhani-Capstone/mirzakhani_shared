@@ -20,6 +20,29 @@ def prep_data(df, features=[]):
     else:
         return df[features]
 
+def create_region_bins(df):
+    region_lists = [['BWh', 'BWk', 'Bsh', 'BSk'], ['Csa', 'Csb', 'Cfa', 'Cfa'], ['Dsb', 'Dsc', 'Dwa', 'Dwb', 'Dfa', 'Dfb', 'Dfc']]
+
+    names =['Dry','Temperate','Continental']
+
+    # create a df with mapping information
+    maps = (pd.DataFrame({'region_bins': names, 'region': region_lists})
+            .explode('region')
+            .reset_index(drop=True))
+
+    # join maps
+    df = df.merge(maps, on='region', how='left')
+    
+    return df 
+
+def create_elevation_bins(df):
+    bins = [0, 500, 1000, 2000, 4000]
+    names = ['bottom_low', 'top_low', 'mid', 'high']
+
+    df['elevation_range'] = pd.cut(df['elevation'], bins, labels=names)
+    
+    return df
+    
 def rename_data(df):
     # rename column names for better readability and easy manipulations of columns
     df=df.rename(columns={'climateregions__climateregion': 'region', 
@@ -41,6 +64,15 @@ def rename_data(df):
                                       'contest-wind-vwnd-925-14d__wind-vwnd-925':'long_wind_925mb'
                                      })
     return df
+
+def get_contest_data(df):
+    df = prep_data(df, features=features)
+    df = rename_data(df)
+    df = create_elevation_bins(df)
+    df = create_region_bins(df)
+    #df = df.drop(columns=['elevation','region']
+    return df
+    
 
 def split_data(df, test_size=0.15):
     '''
