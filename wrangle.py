@@ -36,25 +36,18 @@ def prep_data(df, features=[]):
         return df[features]
 
 def create_region_bins(df):
-    ''' 
-    Function bins regional categories based on the first letter.
-    The regions are defined by Koppen-Geiger climate classifications.
     '''
-    region_lists = [['BWh', 'BWk', 'Bsh', 'BSk'], 
-                    ['Csa', 'Csb', 'Cfa', 'Cfa'],
-                    ['Dsb', 'Dsc', 'Dwa', 'Dwb', 'Dfa', 'Dfb', 'Dfc']]
+    This function creates a new column that holds
+    three categorical variables dry, temperate, and continental
+    that represents the bins we put the 15 original regions into
+    based on the first letter of their Koppen-Geiger code
+    '''
+    df['region_bins_n'] = df.region.replace({'BWh' :'Dry', 'BWk' :'Dry', 'Bsh' :'Dry', 'BSk' :'Dry',
+                                        'Csa':'Temperate', 'Csb':'Temperate', 'Cfa':'Temperate', 'Cfa':'Temperate',
+                                        'Dsb':'Continental', 'Dsc':'Continental', 'Dwa':'Continental', 'Dwb':'Continental', 'Dfa':'Continental', 'Dfb':'Continental', 'Dfc':'Continental'})
 
-    names =['Dry','Temperate','Continental']
+    return df
 
-    # create a df with mapping information
-    maps = (pd.DataFrame({'region_bins': names, 'region': region_lists})
-            .explode('region')
-            .reset_index(drop=True))
-
-    # join maps
-    df = df.merge(maps, on='region', how='left')
-    
-    return df 
 
 def create_elevation_bins(df):
     '''
