@@ -42,8 +42,8 @@ def create_region_bins(df):
     that represents the bins we put the 15 original regions into
     based on the first letter of their Koppen-Geiger code
     '''
-    df['region_bins_n'] = df.region.replace({'BWh' :'Dry', 'BWk' :'Dry', 'Bsh' :'Dry', 'BSk' :'Dry',
-                                        'Csa':'Temperate', 'Csb':'Temperate', 'Cfa':'Temperate', 'Cfa':'Temperate',
+    df['region_bins'] = df.region.replace({'BWh' :'Dry', 'BWk' :'Dry', 'BSh':'Dry', 'BSk':'Dry',
+                                        'Csa':'Temperate', 'Csb':'Temperate', 'Cfa':'Temperate', 'Cfb':'Temperate',
                                         'Dsb':'Continental', 'Dsc':'Continental', 'Dwa':'Continental', 'Dwb':'Continental', 'Dfa':'Continental', 'Dfb':'Continental', 'Dfc':'Continental'})
 
     return df
