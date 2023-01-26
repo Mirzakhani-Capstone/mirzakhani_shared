@@ -41,12 +41,10 @@ def prep_for_model(train, validate, test, target, drivers):
     #scale data
     train_scaled, validate_scaled, test_scaled = scale_data(train, validate, test)
     
-
-    X_train = train_scaled[drivers]
-    
     #make list of cat variables to make dummies for
     cat_vars = list(X_train.select_dtypes(exclude=np.number).columns)
-    
+
+    X_train = train_scaled[drivers]
     dummy_df_train = pd.get_dummies(X_train[cat_vars], dummy_na=False, drop_first=[True, True])
     X_train = pd.concat([X_train, dummy_df_train], axis=1).drop(columns=cat_vars)
     y_train = train[target]
