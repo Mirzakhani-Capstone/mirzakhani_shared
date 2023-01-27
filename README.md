@@ -1,5 +1,6 @@
 # WiDS 2023 - Codeup Submission
-## Predict the arithmetic mean of the max and min observed temperature over the next 14 days for specific locations and start dates
+
+![6012764](https://user-images.githubusercontent.com/112418599/215001160-da469522-b0e3-4f17-8189-931d0ecf354a.jpg)
 
 ## Project Description
 Extreme weather events are sweeping the globe and range from heat waves, wildfires and drought to hurricanes, extreme rainfall and flooding. These weather events have multiple impacts on agriculture, energy, transportation, as well as low resource communities and disaster planning in countries across the globe.
