@@ -41,10 +41,11 @@ def prep_for_model(train, validate, test, target, drivers):
     #scale data
     train_scaled, validate_scaled, test_scaled = scale_data(train, validate, test)
     
+    X_train = train_scaled[drivers]
+    
     #make list of cat variables to make dummies for
     cat_vars = list(X_train.select_dtypes(exclude=np.number).columns)
 
-    X_train = train_scaled[drivers]
     dummy_df_train = pd.get_dummies(X_train[cat_vars], dummy_na=False, drop_first=[True, True])
     X_train = pd.concat([X_train, dummy_df_train], axis=1).drop(columns=cat_vars)
     y_train = train[target]
@@ -149,10 +150,7 @@ def baseline_models(y_train, y_validate):
     y_pred_mean = y_train.mean()
     train_predictions['y_pred_mean'] = y_pred_mean
     validate_predictions['y_pred_mean'] = y_pred_mean
-    
-    y_pred_median = y_train.median()
-    train_predictions['y_pred_median'] = y_pred_median
-    validate_predictions['y_pred_median'] = y_pred_median
+
 
     # create the metric_df as a blank dataframe
     metric_df = pd.DataFrame(data=[
@@ -164,28 +162,9 @@ def baseline_models(y_train, y_validate):
         'RMSE_validate': metric.mean_squared_error(
             y_validate,
             validate_predictions['y_pred_mean']) ** .5,
-        'Difference': (( metric.mean_squared_error(
-            y_train,
-            train_predictions['y_pred_mean']) ** .5)-(metric.mean_squared_error(
-            y_validate,
-            validate_predictions['y_pred_mean']) ** .5))
     }])
 
-    return metric_df.append(
-            {
-                'model': 'median_baseline', 
-                'RMSE_train': metric.mean_squared_error(
-                    y_train,
-                    train_predictions['y_pred_median']) ** .5,
-                'RMSE_validate': metric.mean_squared_error(
-                    y_validate,
-                    validate_predictions['y_pred_median']) ** .5,
-                'Difference': (( metric.mean_squared_error(
-                    y_train,
-                    train_predictions['y_pred_median']) ** .5)-(metric.mean_squared_error(
-                    y_validate,
-                    validate_predictions['y_pred_median']) ** .5))
-            }, ignore_index=True)
+    return metric_df
 
 def best_model(X_train, y_train, X_validate, y_validate, X_test, y_test):
     '''
@@ -209,21 +188,12 @@ def best_model(X_train, y_train, X_validate, y_validate, X_test, y_test):
                 f'RMSE_train': metric.mean_squared_error(
                     y_train,
                     lm2.predict(X_train_degree2)) ** .5,
-                f'r^2_train': metric.explained_variance_score(
-                    y_train,
-                    lm2.predict(X_train_degree2)),
                 f'RMSE_validate': metric.mean_squared_error(
                     y_validate,
                     lm2.predict(X_validate_degree2)) ** .5,
-                f'r^2_validate': metric.explained_variance_score(
-                    y_validate,
-                    lm2.predict(X_validate_degree2)),
                 f'RMSE_test': metric.mean_squared_error(
                     y_test,
                     lm2.predict(X_test_degree2)) ** .5,
-                f'r^2_test': metric.explained_variance_score(
-                    y_test,
-                    lm2.predict(X_test_degree2))
             }])
     
     return metric_df
