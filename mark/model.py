@@ -12,7 +12,7 @@ def scale_data(train, validate, test):
     and scales those features.
     Returns df with new columns with scaled data
     '''
-    scale_features= list(train.select_dtypes(include=np.number).columns)
+    scale_features= list(test.select_dtypes(include=np.number).columns)
     
     train_scaled = train.copy()
     validate_scaled = validate.copy()
@@ -58,9 +58,8 @@ def prep_for_model(train, validate, test, target, drivers):
     X_test = test_scaled[drivers]
     dummy_df_test = pd.get_dummies(X_test[cat_vars], dummy_na=False, drop_first=[True, True])
     X_test = pd.concat([X_test, dummy_df_test], axis=1).drop(columns=cat_vars)
-    y_test = test[target]
 
-    return X_train, y_train, X_validate, y_validate, X_test, y_test
+    return X_train, y_train, X_validate, y_validate, X_test
 
 def regression_models(X_train, y_train, X_validate, y_validate):
     '''

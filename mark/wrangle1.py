@@ -12,6 +12,26 @@ features = ['climateregions__climateregion', 'elevation__elevation', 'lat', 'lon
                  'contest-wind-vwnd-925-14d__wind-vwnd-925']
 
 
+contest_features = ['region',
+ 'elevation',
+ 'lat',
+ 'lon',
+ 'potential_evap',
+ 'precip',
+ 'barometric_pressure',
+ 'all_atmos_precip',
+ 'relative_humidity',
+ 'sea_level_press',
+ 'height_10_mb',
+ 'height_100_mb',
+ 'height_500_mb',
+ 'height_850_mb',
+ 'zonal_wind_250mb',
+ 'zonal_wind_925mb',
+ 'long_wind_250mb',
+ 'long_wind_925mb',
+ 'elevation_range',
+ 'region_bins']
 
 ################################################################## DATA ACQUISITION
 def get_explore_data():
