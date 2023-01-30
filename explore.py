@@ -17,12 +17,14 @@ def data_distribution(df):
 def region_viz(df):
     fig, ax = plt.subplots(1, 2, figsize=(20, 8))
 
+    fig.suptitle('Is there a relationship between climate region and the mean temperature?')
+    
     sns.countplot(x='region', data=df, ax=ax[0])
     ax[0].set_title('Distribution of Regions')
 
     sns.barplot(x='region', y='mean_temp', data=df, ax=ax[1])
     rate = df['mean_temp'].mean()
-    ax[1].set_title('Is there a difference between the 3 major regions and the mean temperature?')
+    ax[1].set_title('Mean temp across regions')
     ax[1].axhline(rate,  label = f'Average Temp Across All Regions {rate:.2f}', linestyle='dotted', color='black')
     ax[1].legend()
     plt.show()
@@ -40,12 +42,14 @@ def region_stats_test(df):
 def elevation_bin_viz(df):
     fig, ax = plt.subplots(1, 2, figsize=(20, 8))
 
+    fig.suptitle('Is there a relationship between elevation_range and the mean temperature?')
+    
     sns.countplot(x='elevation_range', data=df, ax=ax[0])
     ax[0].set_title('Distribution of Elevation')
 
     sns.barplot(x='elevation_range', y='mean_temp', data=df, ax=ax[1])
     rate = df['mean_temp'].mean()
-    ax[1].set_title('Is there a difference between the mean temperatures in different regions?')
+    ax[1].set_title('Mean temp across elevation bins')
     ax[1].axhline(rate,  label = f'Average Temp Across All Elevations {rate:.2f}', linestyle='dotted', color='black')
     ax[1].legend()
     plt.show()
@@ -76,23 +80,29 @@ def elevation_bin_dist_viz(df):
     ax[0].set_title('Bottom Low')
     ax[0].set_ylim(0,2000)
     ax[0].set_xlim(-20,40)
+    ax[0].set_ylabel('')
 
     sns.histplot(x='mean_temp', data= tl, ax=ax[1])
     ax[1].set_title('Top Low')
     ax[1].set_ylim(0,2000)
     ax[1].set_xlim(-20,40)
+    ax[1].set_ylabel('')
 
     sns.histplot(x='mean_temp', data= mid, ax=ax[2])
     ax[2].set_title('Mid')
     ax[2].set_ylim(0,2000)
     ax[2].set_xlim(-20,40)
+    ax[2].set_ylabel('')
 
     sns.histplot(x='mean_temp', data= h, ax=ax[3])
     ax[3].set_title('High')
     ax[3].set_ylim(0,2000)
     ax[3].set_xlim(-20,40)
+    ax[3].set_ylabel('')
 
     plt.show()
+    
+    
 def precipitation_viz(df):
     fig, ax = plt.subplots(1, 2, figsize=(20, 8))
 
@@ -134,7 +144,7 @@ def geopotential_viz(df):
     
     fig, ax = plt.subplots(2, 2, figsize=(20, 20))
 
-    fig.suptitle('Is there a correlation between mean temp and geopotential at different heights?')
+    fig.suptitle('Is there a correlation between mean temp and geopotential pressure at different heights?')
 
     sns.scatterplot(x='height_10_mb', y='mean_temp', hue='region_bins', data= rows, ax=ax[0][0])
     ax[0][0].set_title('At 10 Milibars')
