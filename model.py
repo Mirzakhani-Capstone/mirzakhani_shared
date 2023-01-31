@@ -197,3 +197,51 @@ def best_model(X_train, y_train, X_validate, y_validate, X_test, y_test):
             }])
     
     return metric_df
+
+
+def scale_kaggle_data(train, test, target):
+    '''
+    Takes in train/test dfs from kaggle and target.
+    Returns dfs with continuous variables scaled
+    '''
+    scale_features= list(train.select_dtypes(include=np.number).columns)
+    scale_features.remove(target)
+    
+    train_scaled = train.copy()
+    test_scaled = test.copy()
+    
+    minmax = pre.MinMaxScaler()
+    minmax.fit(train[scale_features])
+    
+    train_scaled[scale_features] = pd.DataFrame(minmax.transform(train[scale_features]),
+                                                  columns=train[scale_features].columns.values).set_index([train.index.values])
+    
+    test_scaled[scale_features] = pd.DataFrame(minmax.transform(test[scale_features]),
+                                                 columns=test[scale_features].columns.values).set_index([test.index.values])
+    
+    return train_scaled, test_scaled
+
+def prep_for_kaggle(train, test, target, drivers):
+    '''
+    Takes in train/test dfs from kaggle, target variable, and list of drivers
+    then splits  for X (all variables but target variable) 
+    and y (only target variable) for each data frame
+    '''
+    #scale data
+    train_scaled, test_scaled = scale_kaggle_data(train, test, target)
+    
+    X_train = train_scaled[drivers]
+    
+    #make list of cat variables to make dummies for
+    cat_vars = list(X_train.select_dtypes(exclude=np.number).columns)
+
+    dummy_df_train = pd.get_dummies(X_train[cat_vars], dummy_na=False, drop_first=[True, True])
+    X_train = pd.concat([X_train, dummy_df_train], axis=1).drop(columns=cat_vars)
+    y_train = train[target]
+
+    X_test = test_scaled[drivers]
+    dummy_df_test = pd.get_dummies(X_test[cat_vars], dummy_na=False, drop_first=[True, True])
+    X_test = pd.concat([X_test, dummy_df_test], axis=1).drop(columns=cat_vars)
+    #y_test = test[target]
+
+    return X_train, y_train, X_test
