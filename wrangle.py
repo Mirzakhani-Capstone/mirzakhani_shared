@@ -18,7 +18,7 @@ def get_explore_data():
     ''' 
     This function reads in a csv held in the same repository folder
     '''
-    df = pd.read_csv('train_data.csv')
+    df = pd.read_csv('train_data.csv').drop('index', axis='columns')
     return df
 
 
@@ -60,6 +60,29 @@ def create_elevation_bins(df):
     return df
 
     
+def season_bins(df):
+    '''
+    Creates a column for month and then bases that to create bins for seasons
+    '''
+    #create month column
+    df['month']=df['startdate'].dt.month
+    
+    #define season groups
+    season_groups = {
+        "Autumn": [9,10,11],
+        "Winter": [12,1,2],
+        "Spring": [3,4,5],
+        "Summer": [6,7,8],
+    }
+    #add season onto the df
+    df["season"] = (
+        df["month"]
+        .apply(lambda x: [k for k in season_groups.keys() if x in season_groups[k]])
+        .str[0]
+        .fillna("Other")
+    )
+    return df
+
 def rename_data(df):
     '''
     This function takes in the dataframe and returns all columns
@@ -84,6 +107,103 @@ def rename_data(df):
                                       'contest-wind-vwnd-925-14d__wind-vwnd-925':'long_wind_925mb'
                                      })
     return df
+
+def deal_with_nulls(df):
+    '''
+    Calculates nulls based on other features in the df
+    and drops one that can't be computed
+    '''
+    #calculate the columns with nulls
+    count_na_df = df.isna().sum()
+    null_cols = list(count_na_df[count_na_df > 0].index)
+
+    #means of each nmme measurement
+    g_means =  ['nmme0-tmp2m-34w__nmme0mean', 
+    'nmme-tmp2m-56w__nmmemean', 
+    'nmme-prate-34w__nmmemean', 
+    'nmme0-prate-56w__nmme0mean', 
+    'nmme0-prate-34w__nmme0mean', 
+    'nmme-prate-56w__nmmemean', 
+    'nmme-tmp2m-34w__nmmemean']
+
+    #measurements we have already
+    g_1 = ['nmme0-tmp2m-34w__cancm30',
+    'nmme0-tmp2m-34w__cancm40',
+    'nmme0-tmp2m-34w__ccsm40',
+    'nmme0-tmp2m-34w__cfsv20',
+    'nmme0-tmp2m-34w__gfdlflora0',
+    'nmme0-tmp2m-34w__gfdlflorb0',
+    'nmme0-tmp2m-34w__gfdl0',
+    'nmme0-tmp2m-34w__nasa0']
+
+    g_2 = ['nmme-tmp2m-56w__cancm3',
+    'nmme-tmp2m-56w__cancm4',
+    'nmme-tmp2m-56w__ccsm4',
+    'nmme-tmp2m-56w__cfsv2',
+    'nmme-tmp2m-56w__gfdl',
+    'nmme-tmp2m-56w__gfdlflora',
+    'nmme-tmp2m-56w__gfdlflorb',
+    'nmme-tmp2m-56w__nasa']
+
+    g_3 = ['nmme-prate-34w__cancm3',
+    'nmme-prate-34w__cancm4',
+    'nmme-prate-34w__ccsm4',
+    'nmme-prate-34w__cfsv2',
+    'nmme-prate-34w__gfdl',
+    'nmme-prate-34w__gfdlflora',
+    'nmme-prate-34w__gfdlflorb',
+    'nmme-prate-34w__nasa']
+
+    g_4 = [ 'nmme0-prate-56w__cancm30',
+    'nmme0-prate-56w__cancm40',
+    'nmme0-prate-56w__ccsm40',
+    'nmme0-prate-56w__cfsv20',
+    'nmme0-prate-56w__gfdlflora0',
+    'nmme0-prate-56w__gfdlflorb0',
+    'nmme0-prate-56w__gfdl0',
+    'nmme0-prate-56w__nasa0']
+
+    g_5 = ['nmme0-prate-34w__cancm30',
+    'nmme0-prate-34w__cancm40',
+    'nmme0-prate-34w__ccsm40',
+    'nmme0-prate-34w__cfsv20',
+    'nmme0-prate-34w__gfdlflora0',
+    'nmme0-prate-34w__gfdlflorb0',
+    'nmme0-prate-34w__gfdl0',
+    'nmme0-prate-34w__nasa0']
+
+    g_6 = ['nmme-prate-56w__cancm3',
+    'nmme-prate-56w__cancm4',
+    'nmme-prate-56w__ccsm4',
+    'nmme-prate-56w__cfsv2',
+    'nmme-prate-56w__gfdl',
+    'nmme-prate-56w__gfdlflora',
+    'nmme-prate-56w__gfdlflorb',
+    'nmme-prate-56w__nasa']
+
+    g_7 = ['nmme-tmp2m-34w__cancm3',
+    'nmme-tmp2m-34w__cancm4',
+    'nmme-tmp2m-34w__ccsm4',
+    'nmme-tmp2m-34w__cfsv2',
+    'nmme-tmp2m-34w__gfdl',
+    'nmme-tmp2m-34w__gfdlflora',
+    'nmme-tmp2m-34w__gfdlflorb',
+    'nmme-tmp2m-34w__nasa']
+
+    #make a list of lists
+    gs = [g_1, g_2, g_3, g_4, g_5, g_6, g_7]
+
+    #go through and compute all features where there were nulls
+    zip_cols = zip(null_cols, gs, g_means)
+    for c, g, s in zip_cols:
+        df[c] = (df[s]*9) - df[g].sum(1)
+
+    #drop column we can't compute
+    df = df.drop(columns='ccsm30')
+
+    return df
+
+
 ################################# SUM OF PREPARATION 
 def get_contest_data(df):
     '''
