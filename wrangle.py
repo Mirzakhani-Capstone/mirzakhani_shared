@@ -60,7 +60,7 @@ def create_elevation_bins(df):
     return df
 
     
-def season_bins(df):
+def create_season_bins(df):
     '''
     Creates a column for month and then bases that to create bins for seasons
     '''
@@ -214,6 +214,7 @@ def get_contest_data(df):
     df = rename_data(df)
     df = create_elevation_bins(df)
     df = create_region_bins(df)
+
     #df = df.drop(columns=['elevation','region']
     return df
     
