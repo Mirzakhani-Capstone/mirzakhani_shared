@@ -199,5 +199,9 @@ def sea_level_pressure_viz(df):
     sns.regplot(y='sea_level_press', x='mean_temp',  data= df, line_kws={'color': '#e9a903', 'lw':'6'})
     ax.set_title('Is there a correlation between sea level pressure and temperature?')
     ax.set_xlabel('Temperature (°C)')
-    ax.set_ylabel('Sea Level Pressure (hPa)')
+    ax.set_ylabel('Sea Level Pressure (Pa)')
     plt.show()
+    
+def sea_level_pressure_spearmanr(df):
+    corr, p = stats.spearmanr(df['sea_level_press'], df['mean_temp'])
+    print(f'p-value: {p}')
