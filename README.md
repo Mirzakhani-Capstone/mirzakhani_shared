@@ -46,29 +46,29 @@ My initial hypothesis is that location, elevation, and wind measurements will be
 ### Features
 | Target | Definition | Data Type | Unit |
 | :---- | :---- | :---- | :---- |
-| **mean_temp**| the arithmetic mean | *float64* | Celsius |
+| **mean_temp**| the arithmetic mean | *float64* | degrees Celsius |
 
 | Feature Name | Definition | Data Type | Unit |
 | :---- | :---- | :---- | :---- |
-| region | Köppen-Geigerclimate classifications | object | specified regions |
-| elevation | elevation | int64 | meters |
-| lat| latitude of location (anonymized) | float64 | latitude |
-| lon | longitude of location (anonymized) | float64 | longitude |
+| region | Köppen-Geiger climate classifications | object | specified regions |
+| elevation | height above sea level | int64 | meters |
+| lat| latitude of location (anonymized) | float64 | degrees |
+| lon | longitude of location (anonymized) | float64 | degrees |
 | startdate | start date of the 14 day period | object | dates |
-| potential_evap| potential evaporation | float64 | mL |
+| potential_evap| the amount of water that could be evaporated were it available | float64 | mL |
 | precip| measured precipitation | float64 | mm |
-| barometric_pressure | pressure | float64 |Hg (inches of mercury) |
+| barometric_pressure | atmospheric pressure adjusted for elevation | float64 |Hg (inches of mercury) |
 | all_atmos_precip | precipitable water for entire atmosphere | float64 | mm |
 | relative humidity | relative humidity | float64 | percent of atmospheric capacity |
-| sea level pressure | sea level pressure at surface | float64 | hectoPascals (hPa), also called millibars |
-| geopotential height at 10 millibars | actual height of a pressure surface above mean sea-level | float64 | millibars |
-| geopotential height at 100 millibars | actual height of a pressure surface above mean sea-level | float64 | millibars |
-| geopotential height at 500 millibars | actual height of a pressure surface above mean sea-level | float64 | millibars |
-| geopotential height at 850 millibars | actual height of a pressure surface above mean sea-level | float64 | millibars |
+| sea level pressure | atmospheric pressure at sea level | float64 | Pascals (Pa) |
+| geopotential height at 10 millibars | measure of geometric height that accounts for the dependence of gravity on latitude and height | float64 | geopotential meter (gpm) |
+| geopotential height at 100 millibars | measure of geometric height that accounts for the dependence of gravity on latitude and height | float64 | geopotential meter (gpm) |
+| geopotential height at 500 millibars | measure of geometric height that accounts for the dependence of gravity on latitude and height| float64 | geopotential meter (gpm) |
+| geopotential height at 850 millibars | measure of geometric height that accounts for the dependence of gravity on latitude and height | float64 | geopotential meter (gpm) |
 | zonal wind at 250 millibars | east-west wind velocity| float64 | meters per second |
-| zonal wind at 925 millibars | east-west wind velocity | float64 | meters per second|
-| longitudinal wind at 250 millibars | north-south velocity | float64 | meters per second|
-| longitudinal wind at 925 millibars | north-south velocity | float64 |meters per second |
+| zonal wind at 925 millibars | east-west wind velocity | float64 | meters per second |
+| longitudinal wind at 250 millibars | north-south velocity | float64 | meters per second |
+| longitudinal wind at 925 millibars | north-south velocity | float64 | meters per second |
 
 
 ## Steps to Reproduce
