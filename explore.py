@@ -136,11 +136,8 @@ def elevation_bin_dist_viz(df):
 def precipitation_viz(df):
     fig, ax = plt.subplots(1, 1, figsize=(20, 8))
 
-    #sns.histplot(data=df, x ='precip', ax=ax[0])
-    #ax[0].set_title('Distribution of Precipitation')
-
-    sns.regplot(x='mean_temp', y='precip', data=df, line_kws={'color': 'red'})
-    ax.set_title('Is there a correlation between temperature and precipitation?')
+    sns.regplot(x='mean_temp', y='precip', data=df, line_kws={'color': '#e9a903', 'lw':'6'})
+    ax.set_title('Is there a correlation between precipitation and temperature?')
     rate = df['precip'].mean()
     ax.axhline(rate,  label = f'Overall Mean Precipitation: {rate:.2f}mm', linestyle='dotted', color='black')
     ax.set_ylabel('Precipitation (mm)')
@@ -156,11 +153,8 @@ def precip_spearmanr_test(df):
 def potential_evap_viz(df):
     fig, ax = plt.subplots(1, 1, figsize=(20, 8))
 
-    #sns.histplot(data=df, x ='potential_evap', ax=ax[0])
-    #ax[0].set_title('Distribution of Potential Evaporation')
-
-    sns.regplot(x='mean_temp', y='potential_evap', data=df, line_kws={'color': 'red'})
-    ax.set_title('Is there a correlation between temperature and potential evaporation?')
+    sns.regplot(x='mean_temp', y='potential_evap', data=df, line_kws={'color': '#e9a903', 'lw':'6'})
+    ax.set_title('Is there a correlation between potential evaporation and temperature?')
     rate = df['potential_evap'].mean()
     ax.axhline(rate,  label = f'Overall Mean Potential Evaporation: {rate:.2f}mL', linestyle='dotted', color='black')
     ax.set_xlabel('Temperature (°C)')
@@ -198,5 +192,12 @@ def geopotential_viz(df):
     ax[1][1].set_xlabel('Meters above mean sea level')
     ax[1][1].set_ylabel('Temperature (°C)')
 
-
+    plt.show()
+    
+def sea_level_pressure_viz(df):
+    fig, ax = plt.subplots(1, 1, figsize=(20, 10))
+    sns.regplot(y='sea_level_press', x='mean_temp',  data= df, line_kws={'color': '#e9a903', 'lw':'6'})
+    ax.set_title('Is there a correlation between sea level pressure and temperature?')
+    ax.set_xlabel('Temperature (°C)')
+    ax.set_ylabel('Sea Level Pressure (hPa)')
     plt.show()
