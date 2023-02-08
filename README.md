@@ -13,7 +13,6 @@ Participants will submit forecasts of temperature and precipitation for one year
 * Determine which columns to use for our data exploration.
 * Explore to find features that indicate the ```mean_temp```.
 * Based on the findings predict the ```mean_temp``` for the test_data.
-* Present our findings at our Codeup graduation ceremony using this [slide show](https://docs.google.com/presentation/d/1AftYFQUtqeWWPaMUxcAm7k6LGFi1ahHZ6n5GIBn9qFM/edit?usp=sharing).
 * Submit our finidings to the WiDS 2023 competition.
 
 ## Initial Thoughts
